@@ -1,31 +1,51 @@
 import os
 from groq import Groq
-from dotenv import load_dotenv
+import streamlit as st
 
-load_dotenv()
+# ------------------ LOAD API KEY ------------------
+try:
+    GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+except:
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
-# Initialize client
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+if not GROQ_API_KEY:
+    raise ValueError("GROQ API key not found. Add it to Streamlit secrets or .env")
 
+# ------------------ INIT CLIENT ------------------
+client = Groq(api_key=GROQ_API_KEY)
 
-def call_llm(user_prompt: str, system_prompt: str = "", response_format: dict = None) -> str:
+# ------------------ MAIN FUNCTION ------------------
+def generate_response(user_input: str) -> str:
+    """
+    Generates AI-based career guidance using Groq LLM
+    """
+
     try:
-        messages = []
-        if system_prompt:
-            messages.append({"role": "system", "content": system_prompt})
-        messages.append({"role": "user", "content": user_prompt})
+        prompt = f"""
+        You are an expert career advisor.
 
-        kwargs = {
-            "model": "llama-3.3-70b-versatile",
-            "messages": messages,
-            "temperature": 0.7,
-        }
-        if response_format:
-            kwargs["response_format"] = response_format
+        Based on the following user input, provide:
+        1. Career suggestions
+        2. Required skills
+        3. Learning roadmap (step-by-step)
 
-        response = client.chat.completions.create(**kwargs)
+        User input:
+        {user_input}
 
-        return response.choices[0].message.content
+        Give a clear and structured answer.
+        """
+
+        completion = client.chat.completions.create(
+            model="llama3-70b-8192",
+            messages=[
+                {"role": "system", "content": "You are a helpful AI career advisor."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7,
+            max_tokens=800
+        )
+
+        return completion.choices[0].message.content
 
     except Exception as e:
         return f"Error generating response: {str(e)}"
