@@ -18,7 +18,8 @@ The platform combines a scalable backend with intelligent AI capabilities to pro
 🔹 Backend
 - FastAPI  
 - Python  
-- SQLAlchemy  
+- SQLAlchemy
+
 🔹 Frontend
 - Streamlit  
 
