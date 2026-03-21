@@ -13,14 +13,17 @@ router = APIRouter()
 @router.post("/")
 def generate_roadmap(data: RoadmapRequest, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     goal = data.goal
+    current_skills = data.current_skills or "Not specified"
 
     system_prompt = "You generate structured career roadmaps in JSON."
     user_prompt = f"""
 You are an expert career mentor.
 
 Generate a structured roadmap for becoming a {goal}.
+The user's current skills are: {current_skills}.
 
 IMPORTANT:
+- Focus on bridging the gap between current skills and the target goal.
 - Output MUST be in valid JSON format
 - Do NOT add any explanation outside JSON
 - Keep it clean and structured
@@ -28,6 +31,8 @@ IMPORTANT:
 Format:
 {{
   "goal": "{goal}",
+  "current_skills": "{current_skills}",
+  "upskilling_advice": "Overall strategic advice for this transition",
   "phases": [
     {{
       "title": "Phase 1: Fundamentals",

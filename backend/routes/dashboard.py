@@ -69,34 +69,4 @@ def delete_roadmap(roadmap_id: int, db: Session = Depends(get_db), current_user:
     db.commit()
 
     return {"message": "Roadmap deleted successfully"}
-
-# 📊 Get all saved analyses
-@router.get("/analyses/")
-def get_dashboard_analyses(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
-    analyses = db.query(models.Analysis).filter(models.Analysis.user_id == current_user.id).all()
-
-    return {
-        "total_analyses": len(analyses),
-        "data": [
-            {
-                "id": a.id,
-                "problem": a.problem,
-                "approach": a.approach,
-                "analysis": a.analysis
-            }
-            for a in analyses
-        ]
-    }
-
-# ❌ Delete analysis
-@router.delete("/analyses/{analysis_id}")
-def delete_analysis(analysis_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
-    analysis = db.query(models.Analysis).filter(models.Analysis.id == analysis_id, models.Analysis.user_id == current_user.id).first()
-
-    if not analysis:
-        return {"error": "Analysis not found"}
-
-    db.delete(analysis)
-    db.commit()
-
-    return {"message": "Analysis deleted successfully"}
+

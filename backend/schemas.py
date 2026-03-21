@@ -14,7 +14,4 @@ class TokenData(BaseModel):
 
 class RoadmapRequest(BaseModel):
     goal: str
-
-class ApproachRequest(BaseModel):
-    problem: str
-    approach: str
+    current_skills: Optional[str] = None

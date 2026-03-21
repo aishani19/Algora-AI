@@ -1,12 +1,16 @@
+import os
+import streamlit as st
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL ="postgresql://postgres:newpassword123@localhost:5432/algora"
+# ------------------ DATABASE CONFIG ------------------
+try:
+    DATABASE_URL = st.secrets["DATABASE_URL"]
+except:
+    DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:newpassword123@localhost:5432/algora")
 
 engine = create_engine(DATABASE_URL)
-
 SessionLocal = sessionmaker(bind=engine)
-
 Base = declarative_base()
 def get_db():
     db = SessionLocal()

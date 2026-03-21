@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from backend.database import Base, engine
 from backend import models   
 
-from backend.routes import roadmap, analyzer, dashboard, auth
+from backend.routes import roadmap, dashboard, auth
 
 app = FastAPI()
 
@@ -11,7 +11,6 @@ Base.metadata.create_all(bind=engine)
 
 app.include_router(auth.router)
 app.include_router(roadmap.router, prefix="/roadmap")
-app.include_router(analyzer.router, prefix="/analyze")
 app.include_router(dashboard.router, prefix="/dashboard")
 
 @app.get("/")
