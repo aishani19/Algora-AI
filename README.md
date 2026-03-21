@@ -14,6 +14,7 @@ The platform combines a scalable backend with intelligent AI capabilities to pro
 - 🏗️ Modular and scalable backend architecture  
 
  🛠️ Technology Stack
+ 
 🔹 Backend
 - FastAPI  
 - Python  
