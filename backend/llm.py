@@ -12,17 +12,20 @@ try:
 except:
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
-if not GROQ_API_KEY:
-    raise ValueError("GROQ API key not found. Add it to Streamlit secrets or .env")
-
+# Remove module-level raise to prevent app-wide crash
 # ------------------ INIT CLIENT ------------------
-client = Groq(api_key=GROQ_API_KEY)
+client = None
+if GROQ_API_KEY:
+    client = Groq(api_key=GROQ_API_KEY)
 
 # ------------------ MAIN FUNCTION ------------------
 def call_llm(user_prompt: str, system_prompt: str, response_format: dict = None) -> str:
     """
     Generates AI-based guidance using Groq LLM with flexiblity for system prompt and format.
     """
+
+    if not GROQ_API_KEY or not client:
+        return "Error: GROQ API key not found. Please add it to Streamlit secrets or your .env file."
 
     try:
         completion_params = {
