@@ -9,3 +9,5 @@ passlib[bcrypt]
 python-jose[cryptography]
 python-multipart
 groq
+psycopg2-binary
+bcrypt
