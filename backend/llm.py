@@ -1,4 +1,5 @@
 import os
+# Deployment Version: 2026.03.31.2335
 from groq import Groq
 import streamlit as st
 from dotenv import load_dotenv
@@ -7,10 +8,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # ------------------ LOAD API KEY ------------------
-try:
-    GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
-except:
-    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+# ------------------ LOAD API KEY ------------------
+GROQ_API_KEY = st.secrets.get("GROQ_API_KEY") or os.getenv("GROQ_API_KEY")
 
 # Remove module-level raise to prevent app-wide crash
 # ------------------ INIT CLIENT ------------------
