@@ -4,8 +4,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 # ------------------ DATABASE CONFIG ------------------
-# Deployment Version: 2026.03.31.2335
-DATABASE_URL = st.secrets.get("DATABASE_URL") or os.getenv("DATABASE_URL")
+# Deployment Version: 2026.03.31.2355
+DATABASE_URL = None
+try:
+    DATABASE_URL = st.secrets.get("DATABASE_URL")
+except:
+    pass
+
+if not DATABASE_URL:
+    DATABASE_URL = os.getenv("DATABASE_URL")
 
 if not DATABASE_URL:
     # Use fallback only for local development, otherwise allow it to fail clearly later

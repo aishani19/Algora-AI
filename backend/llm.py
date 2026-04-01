@@ -8,8 +8,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # ------------------ LOAD API KEY ------------------
-# ------------------ LOAD API KEY ------------------
-GROQ_API_KEY = st.secrets.get("GROQ_API_KEY") or os.getenv("GROQ_API_KEY")
+# ------------------ LOAD API# Deployment Version: 2026.03.31.2355
+GROQ_API_KEY = None
+try:
+    GROQ_API_KEY = st.secrets.get("GROQ_API_KEY")
+except:
+    pass
+
+if not GROQ_API_KEY:
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 # Remove module-level raise to prevent app-wide crash
 # ------------------ INIT CLIENT ------------------
